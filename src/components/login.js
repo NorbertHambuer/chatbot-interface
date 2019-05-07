@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {Button, FormGroup, FormControl, FormLabel} from "react-bootstrap";
+import { Redirect } from 'react-router-dom'
 import "./login.css";
+import axios from 'axios';
 
 export default class Login extends Component {
     constructor(props) {
@@ -8,7 +10,8 @@ export default class Login extends Component {
 
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            toIndex: false
         };
     }
 
@@ -24,9 +27,20 @@ export default class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
+        var bodyFormData = new FormData();
+        bodyFormData.set('username', this.state.username);
+        bodyFormData.set('password', this.state.password);
+
+        axios.post(`http://127.0.0.1:5000/login`, bodyFormData)
+            .then(res =>  this.setState(() => ({
+                toIndex: true
+            })));
     }
 
     render() {
+        if (this.state.toIndex === true) {
+            return <Redirect to='/main' />;
+        }
         return (
             <div className="Login">
                 <form onSubmit={this.handleSubmit}>
