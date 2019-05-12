@@ -1,0 +1,83 @@
+.botButton {
+    padding: 60px 0;
+    color: black;
+    background-color: white;
+    margin-top: 0.5em;
+}
+
+.active {
+    background-color: red;
+}
+
+#chatbotComponent{
+    position: absolute;
+    right: 2.5em !important;
+    bottom: 2.5em !important;
+
+}
+
+.chatbotButton {
+    border-radius: 50%;
+}
+
+.chatbotIcon {
+    right: 2.5em !important;
+    bottom: 2.5em !important;
+    position: absolute;
+    max-width: 100px;
+    cursor: pointer;
+}
+
+.chatroom{
+    position: relative;
+    /*border-width: 2px;*/
+    /*border-color: #630dff;*/
+    /*border-style: solid;*/
+    /*border: 2px solid red;*/
+    height: 45em;
+    width: 25em;
+    /*display: inline-block;*/
+    margin-top: 0.5em;
+    border-radius: 25px;
+    right: 10em;
+    bottom: 8em;
+}
+
+#chatroomHeader{
+    background-color: #47add0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    color: white;
+    height: 10%;
+    border-radius: 25px 25px 0px 0px;
+}
+
+#headerText{
+    text-align: left;
+    font-size: 2em;
+    padding-left: 0.5em;
+}
+
+#chatroomBody{
+    height: 80%;
+    background-image: linear-gradient(to right, #bdc3c7, #d7d2cc);
+}
+
+#chatroomInput{
+    height: 10%;
+}
+
+.messageInput{
+    width: 100%;
+    height: 100%;
+    border-radius: 0px 0px 25px 25px;
+    font-size: 1.5em;
+    font-family: Rockwell;
+}
+
+.messageInput:focus{
+    outline: none;
+    box-shadow: 0px 0px 2px blue;
+}

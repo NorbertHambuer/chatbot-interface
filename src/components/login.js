@@ -3,7 +3,7 @@ import {Button, FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import {Redirect} from 'react-router-dom'
 import "./login.css";
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import UserProfile from '../userProfile'
 
 export default class Login extends Component {
     constructor(props) {
@@ -32,16 +32,19 @@ export default class Login extends Component {
         bodyFormData.set('username', this.state.username);
         bodyFormData.set('password', this.state.password);
 
-        axios.post(`http://127.0.0.1:5000/login`, bodyFormData)
+        axios.post(`http://127.0.0.1:5000/login`, bodyFormData, {withCredentials: true})
             .then(res => {
-                var bodyFormData = new FormData();
-                bodyFormData.set('username', this.state.username);
-                bodyFormData.set('password', this.state.password);
+                UserProfile.setId(res.data.user_id);
+                this.setState(() => ({
+                    toIndex: true
+                }))
+            });
+    };
 
-                axios.get(`http://127.0.0.1:5000/get_user_bots?user_id=2`,{  withCredentials: true})
-                    .then(res => res => this.setState(() => ({
-                        toIndex: true
-                    })));
+    getBots = event => {
+        axios.get(`http://127.0.0.1:5000/get_user_bots`, {withCredentials: true})
+            .then(res => {
+                console.log(res);
             });
     };
 

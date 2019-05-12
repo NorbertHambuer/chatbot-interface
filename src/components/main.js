@@ -1,71 +1,110 @@
 // index.component.js
 
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
 import axios from "axios";
+import {Button} from "react-bootstrap";
+import UserProfile from '../userProfile'
+import './main.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import logo from './chat_2.png'
+import Image from 'react-bootstrap/Image'
+import FadeIn from 'react-fade-in';
 
-class TasksList extends Component {
+class Bot extends Component {
+    render() {
+        const botDetails = this.props;
+        return (
+            <div>
+                <Button
+                    block
+                    size="lg"
+                    type="button"
+                    className={`botButton ${this.props.active === this.props.id ? 'active' : 'innactive'}`}
+                    onClick={() => this.props.setActive(this.props.id)}
+                >
+                    {botDetails.name}
+                </Button>
+            </div>
+        )
+    }
+}
+
+
+class ChatRoom extends Component {
+    render() {
+        return (
+            <FadeIn transitionDuration='800'>
+                <div className='chatroom form-group'>
+                    <div id='chatroomHeader'>
+                        <h1 id='headerText'>React simple chatbot</h1>
+                    </div>
+                    <div id='chatroomBody'></div>
+                    <div id='chatroomInput'>
+                        <input type="text" id='message' className='messageInput' placeholder='Type the message'/>
+                    </div>
+                </div>
+            </FadeIn>
+        )
+    }
+}
+
+
+class Chatbot extends Component {
     constructor(props) {
         super(props);
-        this.state = {tasks: []};
+        this.state = {
+            active: false
+        };
+    }
+
+    render() {
+        console.log(this.state.active);
+        return (
+            <div id='chatbotComponent'>
+                {this.state.active && <ChatRoom/>}
+                <div className='chatbotButton'>
+                    <Image src={logo} roundedCircle className='chatbotIcon'
+                           onClick={() => this.setState({active: !this.state.active})}/>
+                </div>
+            </div>
+        )
+    }
+}
+
+/*List with properties, if 1 BOT - align left, 2 Align right*/
+/*Create new component for whole chatbot ui that takes a bot id as a parameter*/
+export default class Main extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            bots: [],
+            active: 0
+        };
+    }
+
+    addActiveClass(id) {
+        this.setState({active: id});
     }
 
     componentDidMount(prevProps) {
-        axios.get(`https://flask-todo-rest-api.herokuapp.com/tasks`).then(response => this.setState({tasks: response.data.tasks}));
+        axios.get(`http://127.0.0.1:5000/get_user_bots?user_id=${UserProfile.getId()}`, {withCredentials: true})
+            .then(response => {
+                this.setState({
+                    bots: response.data.bots
+                })
+            });
     }
-
-    deleteTask = async (taskId, taskIndex) => {
-        axios.delete(`https://flask-todo-rest-api.herokuapp.com/tasks?id=${taskId}`).then(response => {
-            let tasks = [...this.state.tasks];
-            tasks.splice(taskIndex, 1);
-            this.setState({tasks});
-        });
-    };
 
     render() {
         return (
             <div>
-                <table className="table">
-                    <tbody>
-                    <tr>
-                        <th scope="col">Description</th>
-                        <th scope="col">Deadline</th>
-                        <th scope="col">Completed</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                    {this.state.tasks.map((task, index) => <Task key={task.id} index={index}
-                                                                 removeTaskHandler={(taskId, taskIndex) => this.deleteTask(taskId, taskIndex)} {...task}/>)}
-                    </tbody>
-                </table>
-            </div>)
-    }
-}
-
-class Task extends React.Component {
-    render() {
-        const taskDetails = this.props;
-        return (
-            <tr>
-                <td>{taskDetails.description}</td>
-                <td>{taskDetails.deadline}</td>
-                <td>{taskDetails.completed ? 'Completed' : 'Incompleted'}</td>
-                <td><Link to={"/edit/"+taskDetails.id} className="btn btn-primary"><i className="fa fa-edit fa-2x"></i></Link></td>
-                <td><i className="fa fa-trash fa-2x" style={{color: 'red'}}
-                       onClick={() => this.props.removeTaskHandler(taskDetails.id, taskDetails.index)}></i></td>
-            </tr>
-        );
-    }
-}
-
-export default class Main extends Component {
-
-    render() {
-        return (
-            <div>
-                <h2>To do list</h2> <br/>
-                <TasksList/>
+                <div className="col-md-6 offset-md-3">
+                    {this.state.bots.map((bot, index) => <Bot key={bot.id} index={index} active={this.state.active}
+                                                              setActive={(id) => this.addActiveClass(id)}     {...bot}/>)}
+                </div>
+                <Chatbot></Chatbot>
             </div>
+
         )
     }
 }
