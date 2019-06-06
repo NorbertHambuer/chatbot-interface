@@ -1,23 +1,19 @@
 var UserProfile = (function() {
-    var full_name = "";
-    var id = 0;
-
     var getName = function() {
-        return full_name;    // Or pull this from cookie/localStorage
+        return localStorage.getItem('username');
     };
 
     var setName = function(name) {
-        full_name = name;
-        // Also set this in cookie/localStorage
+        localStorage.setItem('username',name);
     };
 
     var getId = function(){
-        return id;
+        return localStorage.getItem('userId');
     };
 
     var setId = function(new_id){
-        id = new_id;
-    }
+        localStorage.setItem('userId',new_id);
+    };
 
     return {
         getName: getName,

@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './App.css';
 import Login from './components/login'
 import Main from './components/main'
+import Addbot from './components/addbot'
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
                   <Route exact path='/' component={ Login } />
                   <Route path="/login" component={Login} />
                   <Route path="/main" component={Main} />
+                  <Route path="/addbot" component={Addbot} />
               </div>
           </Router>
 

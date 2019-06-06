@@ -9,8 +9,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from './chat_2.png'
 import Image from 'react-bootstrap/Image'
 import FadeIn from 'react-fade-in';
+import NavigationBar from './navbar'
 
 class Bot extends Component {
+
     render() {
         const botDetails = this.props;
         return (
@@ -30,7 +32,75 @@ class Bot extends Component {
 }
 
 
+class Spinner extends Component {
+    render() {
+        return (
+            <span className='spinme'>
+                <div className='spinner'>
+                    <div className='bounce1'></div>
+                    <div className='bounce2'></div>
+                    <div className='bounce3'></div>
+                </div>
+            </span>
+        );
+    }
+}
+
+class Message extends Component {
+    render() {
+        return (
+            <li className={`message-${this.props.align} ms11`}>
+                <div className='messageinner-ms11'>
+                    <span className='message-text'>
+                        {this.props.text === '' ? <Spinner></Spinner> : this.props.text}
+                    </span>
+                </div>
+            </li>
+        );
+    }
+}
+
 class ChatRoom extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            question: '',
+            annimationStarted: false
+        };
+        this.sendQuestion = this.sendQuestion.bind(this);
+    }
+
+    inputValueChange(event) {
+        this.setState({question: event.target.value});
+
+        if (!this.state.annimationStarted) {
+            this.setState({
+                annimationStarted: true
+            });
+            this.props.addMessage({
+                align: 'right',
+                text: ''
+            });
+        }
+    }
+
+    sendQuestion(event) {
+        if (event.key === 'Enter') {
+            if (this.state.annimationStarted) {
+                this.setState({
+                    annimationStarted: false
+                });
+            }
+
+            this.props.getResponse(this.state.question);
+            this.setState({
+                question: ''
+            });
+        }
+    }
+
+    /*onFocus={}*/
+
     render() {
         return (
             <FadeIn transitionDuration='800'>
@@ -38,9 +108,17 @@ class ChatRoom extends Component {
                     <div id='chatroomHeader'>
                         <h1 id='headerText'>React simple chatbot</h1>
                     </div>
-                    <div id='chatroomBody'></div>
+                    <div id='chatroomBody'>
+                        <ul id='message_list' className='chat-message-list'>
+                            {this.props.messages.map((message, index) => <Message key={index} align={message.align}
+                                                                                  text={message.text}/>)}
+                        </ul>
+                    </div>
                     <div id='chatroomInput'>
-                        <input type="text" id='message' className='messageInput' placeholder='Type the message'/>
+                        <input type="text" id='message' className='messageInput' placeholder='Type the message'
+                               value={this.state.question}
+                               onChange={event => this.inputValueChange(event)}
+                               onKeyDown={this.sendQuestion}/>
                     </div>
                 </div>
             </FadeIn>
@@ -52,19 +130,77 @@ class ChatRoom extends Component {
 class Chatbot extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            active: false
+            active: false,
+            bot_id: 0,
+            messages: [
+                /*  {
+                      align: 'left',
+                      text: 'Hello Note that the development build is not optimized.\n' +
+                          'To create a production build, use npm run build.\n'
+                  },
+                  {
+                      align: 'right',
+                      text: ''
+                  }*/
+            ]
         };
     }
 
+    openChatRoom(bot_id) {
+        this.setState({active: !this.state.active});
+
+        this.addMessage({
+            align: 'left',
+            text: ''
+        });
+
+        if (!this.state.active) {
+            axios.get(`http://127.0.0.1:5000/get_response?user_id=${UserProfile.getId()}&bot_id=${bot_id}&question=Hello`, {withCredentials: true})
+                .then(response => {
+                    this.changeLastMessage(response.data.answer)
+                });
+        } else {
+            console.log("closed");
+        }
+    }
+
+    getResponse(question) {
+        axios.get(`http://127.0.0.1:5000/get_response?user_id=${UserProfile.getId()}&bot_id=${this.props.bot_id}&question=${question}`, {withCredentials: true})
+            .then(response => {
+                this.changeLastMessage(question);
+                this.addMessage({
+                    align: 'left',
+                    text: response.data.answer});
+            });
+    }
+
+    addMessage(message) {
+        const messageList = this.state.messages.concat(message);
+        this.setState({
+            messages: messageList
+        });
+    }
+
+    changeLastMessage(text) {
+        const messageList = [...this.state.messages];
+
+        messageList[messageList.length - 1].text = text;
+
+        this.setState({
+            messages: messageList
+        });
+    }
+
     render() {
-        console.log(this.state.active);
         return (
             <div id='chatbotComponent'>
-                {this.state.active && <ChatRoom/>}
+                {this.state.active &&
+                <ChatRoom messages={this.state.messages} addMessage={(message) => this.addMessage(message)} getResponse={(question) => this.getResponse(question)}/>}
                 <div className='chatbotButton'>
                     <Image src={logo} roundedCircle className='chatbotIcon'
-                           onClick={() => this.setState({active: !this.state.active})}/>
+                           onClick={() => this.openChatRoom(this.props.bot_id)}/>
                 </div>
             </div>
         )
@@ -97,12 +233,14 @@ export default class Main extends Component {
 
     render() {
         return (
+
             <div>
+                <NavigationBar/>
                 <div className="col-md-6 offset-md-3">
                     {this.state.bots.map((bot, index) => <Bot key={bot.id} index={index} active={this.state.active}
                                                               setActive={(id) => this.addActiveClass(id)}     {...bot}/>)}
                 </div>
-                <Chatbot></Chatbot>
+                <Chatbot bot_id={this.state.active}></Chatbot>
             </div>
 
         )
