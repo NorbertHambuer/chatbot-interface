@@ -159,7 +159,7 @@ export default class Addbot extends Component {
     };
 
     render() {
-        return (<div className="AddbotForm">
+        return (<div className="addbotForm">
             <NavigationBar></NavigationBar>
             <form className='col-sm-4 offset-sm-4' onSubmit={this.addNewBot}>
                 <FormGroup controlId="name">

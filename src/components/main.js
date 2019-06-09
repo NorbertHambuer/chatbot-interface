@@ -1,5 +1,3 @@
-// index.component.js
-
 import React, {Component} from 'react';
 import axios from "axios";
 import {Button} from "react-bootstrap";
@@ -10,23 +8,40 @@ import logo from './chat_2.png'
 import Image from 'react-bootstrap/Image'
 import FadeIn from 'react-fade-in';
 import NavigationBar from './navbar'
-import Cookies from 'js-cookie';
+
+
+{/*<Button
+    block
+    size="lg"
+    type="button"
+    className={`botButton ${this.props.active === this.props.id ? 'active' : 'innactive'}`}
+    onClick={() => this.props.setActive(this.props.id)}
+>
+    {botDetails.name}
+</Button>*/}
 
 class Bot extends Component {
 
     render() {
         const botDetails = this.props;
         return (
-            <div>
-                <Button
-                    block
-                    size="lg"
-                    type="button"
-                    className={`botButton ${this.props.active === this.props.id ? 'active' : 'innactive'}`}
-                    onClick={() => this.props.setActive(this.props.id)}
-                >
-                    {botDetails.name}
-                </Button>
+            <div class="botButton row">
+                <div className="col-sm-4 botNameDiv">
+                    <span className="botName">{botDetails.name}</span>
+                </div>
+                <div className="col-sm-8 row botButtonsDiv">
+                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/delete.png`)} alt=''/></div>
+                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docs.png`)} alt=''/></div>
+                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docker.png`)} alt=''/></div>
+                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/statistics.png`)} alt=''/></div>
+                    <div  className="col-sm-2"><img className="img-bot" src={require(`../assets/img/start.png`)} alt=''/></div>
+                    {/*<img className="img-bot" src={require(`../assets/img/docs.png`)} alt=''/>
+                    <img className="img-bot" src={require(`../assets/img/docker.png`)} alt=''/>
+                    <img className="img-bot" src={require(`../assets/img/statistics.png`)} alt=''/>
+                    <img className="img-bot" src={require(`../assets/img/shutdown.png`)} alt=''/>
+                    <img className="img-bot" src={require(`../assets/img/start.png`)} alt=''/>*/}
+
+                </div>
             </div>
         )
     }
@@ -118,6 +133,7 @@ class ChatRoom extends Component {
                     <div id='chatroomInput'>
                         <input type="text" id='message' className='messageInput' placeholder='Type the message'
                                value={this.state.question}
+                               autoComplete='off'
                                onChange={event => this.inputValueChange(event)}
                                onKeyDown={this.sendQuestion}/>
                     </div>
@@ -135,17 +151,7 @@ class Chatbot extends Component {
         this.state = {
             active: false,
             bot_id: 0,
-            messages: [
-                /*  {
-                      align: 'left',
-                      text: 'Hello Note that the development build is not optimized.\n' +
-                          'To create a production build, use npm run build.\n'
-                  },
-                  {
-                      align: 'right',
-                      text: ''
-                  }*/
-            ]
+            messages: []
         };
     }
 
@@ -224,7 +230,6 @@ export default class Main extends Component {
     }
 
     componentDidMount(prevProps) {
-        console.log(Cookies.get('access_token_cookie'));
         axios.get(`http://127.0.0.1:5000/get_user_bots?user_id=${UserProfile.getId()}`, {withCredentials: true})
             .then(response => {
                 this.setState({

@@ -7,7 +7,7 @@ export default class NavigationBar extends Component{
 
         return (
             <div>
-                <Navbar bg="primary" variant="dark">
+                <Navbar bg="primary" variant="light">
                     <Navbar.Brand href="main"><img
                         src={logo}
                         width="30"

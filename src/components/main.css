@@ -3,6 +3,31 @@
     color: black;
     background-color: white;
     margin-top: 0.5em;
+    border: 1px solid #007bff;
+    border-radius: 25px;
+    height: 5em;
+    margin-bottom: 2em;
+}
+
+.botName{
+    font-family: "Bungee Inline";
+    font-size: 2em;
+}
+
+.botNameDiv{
+    /*border: 1px solid red;*/
+    transform: translateY(-50%)
+}
+
+.botButtonsDiv{
+    /*border: 1px solid black;*/
+    transform: translateY(-50%)
+}
+
+.img-bot{
+    /*width: 20%;*/
+    height: auto;
+    cursor: pointer;
 }
 
 .active {
@@ -69,7 +94,7 @@
 }
 
 #chatroomBody ul{
-    list-style: none;
+    list-style: none !important;
     overflow: scroll;
 }
 
@@ -109,7 +134,7 @@ body {
 .message-left .message-time {
     display: block;
     font-size: 12px;
-    text-align: left;
+    text-align: left !important;
     padding-left: 30px;
     padding-top: 4px;
     color: #ccc;
@@ -119,7 +144,7 @@ body {
 .message-right .message-time {
     display: block;
     font-size: 12px;
-    text-align: right;
+    text-align: right !important;
     padding-right: 20px;
     padding-top: 4px;
     color: #ccc;
@@ -230,6 +255,11 @@ body {
 
 #message_list{
     max-height: 100%;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+}
+
+.active{
+    background-color: #26c2f0;
+    border-radius: 25px;
 }

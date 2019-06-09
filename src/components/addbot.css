@@ -1,10 +1,10 @@
-li{
+.addbotForm li{
     float: left;
     width: 33.33%;
     cursor: pointer;
 }
 
-ul{
+.addbotForm ul{
     position: absolute;
     padding: 0 15px;
     margin: 0;
@@ -28,7 +28,7 @@ form{
     background-color: #5ca6fa;
 }
 
-li:hover{
+.addbotForm li:hover{
     background-color: lightblue;
 }
 
