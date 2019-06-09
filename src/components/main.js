@@ -10,6 +10,7 @@ import logo from './chat_2.png'
 import Image from 'react-bootstrap/Image'
 import FadeIn from 'react-fade-in';
 import NavigationBar from './navbar'
+import Cookies from 'js-cookie';
 
 class Bot extends Component {
 
@@ -223,6 +224,7 @@ export default class Main extends Component {
     }
 
     componentDidMount(prevProps) {
+        console.log(Cookies.get('access_token_cookie'));
         axios.get(`http://127.0.0.1:5000/get_user_bots?user_id=${UserProfile.getId()}`, {withCredentials: true})
             .then(response => {
                 this.setState({

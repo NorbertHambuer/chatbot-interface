@@ -37,6 +37,7 @@ class LoginForm extends Component {
         axios.post(`http://127.0.0.1:5000/login`, bodyFormData, {withCredentials: true})
             .then(res => {
                 UserProfile.setId(res.data.user_id);
+                localStorage.setItem('csrf_token', res.data.csrf_token);
                 this.props.redirect();
             });
     }
@@ -332,7 +333,7 @@ export default class Login extends Component {
             return <Redirect to='/main'/>;
         }
         return (
-            <div id='loginFrame'>
+            <div id='loginFrame' className='col-sm-4 offset-sm-4'>
                 <div className="login-header" align="center">
                     <img className="img-circle" id="img_logo" src={logo} alt=''/>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
