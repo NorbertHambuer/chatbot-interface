@@ -1,14 +1,20 @@
 import React, {Component} from "react";
 import logo from '../assets/img/bot_login.png'
 import {Nav, Navbar} from "react-bootstrap";
-
+import './navbar.css'
+import {NavLink} from 'react-router-dom'
+import history from './history';
 export default class NavigationBar extends Component{
-    render() {
+    changeRoute(status){
+        console.log(history.location.pathname);
+    }
 
+    render() {
         return (
+
             <div>
                 <Navbar bg="primary" variant="light">
-                    <Navbar.Brand href="main"><img
+                    <Navbar.Brand><img
                         src={logo}
                         width="30"
                         height="30"
@@ -16,9 +22,9 @@ export default class NavigationBar extends Component{
                         alt="Home"
                     /></Navbar.Brand>
                     <Nav className="mr-auto">
-                        <Nav.Link href="main">Home</Nav.Link>
-                        <Nav.Link href="addbot">Create New Bot</Nav.Link>
-                        <Nav.Link href="statistics">Statistics</Nav.Link>
+                        <NavLink onClick={() => this.changeRoute(true)}  className='navLinkButton' to="/main">Home</NavLink>
+                        <NavLink onClick={() => this.changeRoute(true)}  className='navLinkButton' to="/addbot">Create New Bot</NavLink>
+                        <NavLink onClick={() => this.changeRoute(true)}  className='navLinkButton' to="/statistics">Statistics</NavLink>
                     </Nav>
                 </Navbar>
             </div>

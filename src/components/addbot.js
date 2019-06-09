@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import {Button, FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import "./addbot.css";
 import axios from 'axios';
-import NavigationBar from './navbar'
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
+import history from './history';
 
 class KnowledgeItem extends Component{
     constructor(props) {
@@ -138,7 +138,7 @@ export default class Addbot extends Component {
         axios.defaults.withCredentials = true;
         axios.post(`http://127.0.0.1:5000/create_bot`, bodyFormData, config)
             .then(res => {
-               console.log(res);
+                history.push('/main');
             });
     };
 
@@ -160,7 +160,7 @@ export default class Addbot extends Component {
 
     render() {
         return (<div className="addbotForm">
-            <NavigationBar></NavigationBar>
+            {/*<NavigationBar></NavigationBar>*/}
             <form className='col-sm-4 offset-sm-4' onSubmit={this.addNewBot}>
                 <FormGroup controlId="name">
                     <FormLabel >Name</FormLabel>

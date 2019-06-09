@@ -1,45 +1,34 @@
 import React, {Component} from 'react';
 import axios from "axios";
-import {Button} from "react-bootstrap";
 import UserProfile from '../userProfile'
 import './main.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from './chat_2.png'
 import Image from 'react-bootstrap/Image'
 import FadeIn from 'react-fade-in';
-import NavigationBar from './navbar'
-
-
-{/*<Button
-    block
-    size="lg"
-    type="button"
-    className={`botButton ${this.props.active === this.props.id ? 'active' : 'innactive'}`}
-    onClick={() => this.props.setActive(this.props.id)}
->
-    {botDetails.name}
-</Button>*/}
 
 class Bot extends Component {
+    deleteBot(id){
+        var token = localStorage.getItem('csrf_token');
+        axios.delete(`http://127.0.0.1:5000/bot?bot_id=${id}&user_id=${UserProfile.getId()}`, {withCredentials: true, headers: {'Content-Type' : 'application/json', "X-CSRF-TOKEN": token}}).then(response =>{
+            this.props.delete(this.props.index);
+        });
+    }
 
     render() {
         const botDetails = this.props;
         return (
-            <div class="botButton row">
+            <div className={`botButton row ${this.props.active === this.props.id ? 'active' : 'innactive'}`}>
                 <div className="col-sm-4 botNameDiv">
                     <span className="botName">{botDetails.name}</span>
                 </div>
                 <div className="col-sm-8 row botButtonsDiv">
-                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/delete.png`)} alt=''/></div>
+                    <div className="col-sm-2" onClick={() => this.deleteBot(botDetails.id)}><img className="img-bot" src={require(`../assets/img/delete.png`)} alt=''/></div>
                     <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docs.png`)} alt=''/></div>
                     <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docker.png`)} alt=''/></div>
                     <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/statistics.png`)} alt=''/></div>
-                    <div  className="col-sm-2"><img className="img-bot" src={require(`../assets/img/start.png`)} alt=''/></div>
-                    {/*<img className="img-bot" src={require(`../assets/img/docs.png`)} alt=''/>
-                    <img className="img-bot" src={require(`../assets/img/docker.png`)} alt=''/>
-                    <img className="img-bot" src={require(`../assets/img/statistics.png`)} alt=''/>
-                    <img className="img-bot" src={require(`../assets/img/shutdown.png`)} alt=''/>
-                    <img className="img-bot" src={require(`../assets/img/start.png`)} alt=''/>*/}
+                    {this.props.active === this.props.id ? <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/shutdown.png`)} alt=''/></div> : <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/start.png`)} alt=''/></div>}
+
 
                 </div>
             </div>
@@ -226,7 +215,16 @@ export default class Main extends Component {
     }
 
     addActiveClass(id) {
-        this.setState({active: id});
+        if(this.state.active !== id)
+            this.setState({active: id});
+        else
+            this.setState({active: 0})
+    }
+
+    deleteBot(index){
+        let bots = [...this.state.bots];
+        bots.splice(index, 1);
+        this.setState({bots: bots});
     }
 
     componentDidMount(prevProps) {
@@ -242,10 +240,10 @@ export default class Main extends Component {
         return (
 
             <div>
-                <NavigationBar/>
+                {/*<NavigationBar/>*/}
                 <div className="col-md-6 offset-md-3">
                     {this.state.bots.map((bot, index) => <Bot key={bot.id} index={index} active={this.state.active}
-                                                              setActive={(id) => this.addActiveClass(id)}     {...bot}/>)}
+                                                              setActive={(id) => this.addActiveClass(id)}  delete={(index) => this.deleteBot(index)}     {...bot}/>)}
                 </div>
                 <Chatbot bot_id={this.state.active}></Chatbot>
             </div>
