@@ -32,7 +32,7 @@ class App extends Component {
         console.log(this.state.showNavbar);
         return (
             <div>
-                {this.state.showNavbar || UserProfile.getId() !== 0 ? <NavigationBar></NavigationBar> : null}
+                {this.state.showNavbar ? <NavigationBar></NavigationBar> : null}
                 <Switch>
                     <Route exact path='/' component={props => <Login loginUpdate={this.showNavigation.bind(this)}/>}/>
                     <Route path="/login" component={props => <Login loginUpdate={this.showNavigation.bind(this)}/>}/>

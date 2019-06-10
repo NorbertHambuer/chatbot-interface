@@ -1,48 +1,46 @@
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import React, {Component} from "react";
 import { Bar, Line, Pie } from 'react-chartjs-2';
+import axios from "axios";
+import UserProfile from "../userProfile";
 
 
-export default class Statistics extends Component {
+export default class botStatistics extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            email: ""
+            questions: []
         };
     }
 
-    sendPasswordRecovery() {
-
+    componentDidMount(prevProps) {
+        axios.get(`http://127.0.0.1:5000/most_asked_questions?user_id=${UserProfile.getId()}&bot_id=${this.props.bot_id}`, {withCredentials: true})
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    questions: response.data
+                })
+            });
     }
 
-    validateForm() {
-        return this.state.email.length > 0;
-    }
 
-    handleChange = event => {
-        this.setState({
-            [event.target.id]: event.target.value
-        });
-    };
-
-
-/*<ReactCSSTransitionGroup
-                transitionAppear={true}
-                transitionAppearTimeout={1000}
-                transitionEnterTimeout={1000}
-                transitionLeaveTimeout={10}
-                transitionName='loadComponent'
-            >
-                    <div className="statistics">
-                        <Bar
-                            data={[1,2,3,4]}
-                            width={100}
-                            height={50}
-                            options={{ maintainAspectRatio: false }}
-                        />
-                    </div>
-            </ReactCSSTransitionGroup>*/
+    /*<ReactCSSTransitionGroup
+                    transitionAppear={true}
+                    transitionAppearTimeout={1000}
+                    transitionEnterTimeout={1000}
+                    transitionLeaveTimeout={10}
+                    transitionName='loadComponent'
+                >
+                        <div className="statistics">
+                            <Bar
+                                data={[1,2,3,4]}
+                                width={100}
+                                height={50}
+                                options={{ maintainAspectRatio: false }}
+                            />
+                        </div>
+                </ReactCSSTransitionGroup>*/
 
     render() {
         const data = {
@@ -81,12 +79,12 @@ export default class Statistics extends Component {
         };
         return (
 
-        <div className="statistics">
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
-            <Pie ref="chart" data={data} />
-        </div>
+            <div className="statistics">
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+                <Pie ref="chart" data={data} />
+            </div>
         )
     }
 }
