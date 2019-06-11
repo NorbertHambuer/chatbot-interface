@@ -8,7 +8,6 @@ import Main from './components/main'
 import Addbot from './components/addbot'
 import Statistics from './components/statistics'
 import NavigationBar from './components/navbar'
-import UserProfile from './userProfile'
 import BotStatistics from './components/botStatistics'
 
 
@@ -30,8 +29,6 @@ class App extends Component {
     }
 
     render() {
-        console.log(UserProfile.getId());
-        console.log(this.state.showNavbar);
         return (
             <div>
                 {this.state.showNavbar ? <NavigationBar></NavigationBar> : null}

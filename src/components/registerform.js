@@ -31,7 +31,9 @@ export default class RegisterForm extends Component {
         });
     };
 
-    registerUser() {
+    registerUser = event => {
+
+        event.preventDefault();
         var bodyFormData = new FormData();
         bodyFormData.set('username', this.state.username);
         bodyFormData.set('first_name', this.state.firstName);
@@ -43,8 +45,7 @@ export default class RegisterForm extends Component {
         if (this.state.password === this.state.passwordConfirm) {
             axios.post(`${servConfig}register`, bodyFormData, {withCredentials: true})
                 .then(res => {
-                    UserProfile.setId(res.data.user_id);
-                    //this.props.redirect();
+                    this.props.transition('registerVisible', 'loginVisible');
                 });
         }
     }
@@ -60,7 +61,7 @@ export default class RegisterForm extends Component {
             >
                 {this.props.visible ?
                     <div className="LoginForm">
-                        <form onSubmit={this.loginUser}>
+                        <form onSubmit={this.registerUser}>
                             <FormGroup controlId="username">
                                 <FormLabel>Username</FormLabel>
                                 <FormControl
