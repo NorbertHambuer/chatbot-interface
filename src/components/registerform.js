@@ -69,7 +69,7 @@ export default class RegisterForm extends Component {
                                     onChange={this.handleChange}
                                 />
                             </FormGroup>
-                            <FormGroup controlId="firstname">
+                            <FormGroup controlId="firstName">
                                 <FormLabel>First name</FormLabel>
                                 <FormControl
                                     type="text"
@@ -77,7 +77,7 @@ export default class RegisterForm extends Component {
                                     onChange={this.handleChange}
                                 />
                             </FormGroup>
-                            <FormGroup controlId="lastname">
+                            <FormGroup controlId="lastName">
                                 <FormLabel>Last name</FormLabel>
                                 <FormControl
                                     type="text"
