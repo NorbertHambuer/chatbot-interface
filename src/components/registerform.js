@@ -44,7 +44,7 @@ export default class RegisterForm extends Component {
             axios.post(`${servConfig}register`, bodyFormData, {withCredentials: true})
                 .then(res => {
                     UserProfile.setId(res.data.user_id);
-                    this.props.redirect();
+                    //this.props.redirect();
                 });
         }
     }
