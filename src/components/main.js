@@ -7,11 +7,12 @@ import logo from './chat_2.png'
 import Image from 'react-bootstrap/Image'
 import FadeIn from 'react-fade-in';
 import history from "./history";
+import servConfig from "../server_config"
 
 class Bot extends Component {
     deleteBot(id){
         var token = localStorage.getItem('csrf_token');
-        axios.delete(`http://127.0.0.1:5000/bot?bot_id=${id}&user_id=${UserProfile.getId()}`, {withCredentials: true, headers: {'Content-Type' : 'application/json', "X-CSRF-TOKEN": token}}).then(response =>{
+        axios.delete(`${servConfig}bot?bot_id=${id}&user_id=${UserProfile.getId()}`, {withCredentials: true, headers: {'Content-Type' : 'application/json', "X-CSRF-TOKEN": token}}).then(response =>{
             this.props.delete(this.props.index);
         });
     }
@@ -159,7 +160,7 @@ class Chatbot extends Component {
                     text: ''
                 });
 
-                axios.get(`http://127.0.0.1:5000/get_response?user_id=${UserProfile.getId()}&bot_id=${bot_id}&question=Hello`, {withCredentials: true})
+                axios.get(`${servConfig}get_response?user_id=${UserProfile.getId()}&bot_id=${bot_id}&question=Hello`, {withCredentials: true})
                     .then(response => {
                         this.changeLastMessage(response.data.answer)
                     });
@@ -172,7 +173,7 @@ class Chatbot extends Component {
     }
 
     getResponse(question) {
-        axios.get(`http://127.0.0.1:5000/get_response?user_id=${UserProfile.getId()}&bot_id=${this.props.bot_id}&question=${question}`, {withCredentials: true})
+        axios.get(`${servConfig}get_response?user_id=${UserProfile.getId()}&bot_id=${this.props.bot_id}&question=${question}`, {withCredentials: true})
             .then(response => {
                 this.changeLastMessage(question);
                 this.addMessage({
@@ -242,7 +243,7 @@ export default class Main extends Component {
     }
 
     componentDidMount(prevProps) {
-        axios.get(`http://127.0.0.1:5000/get_user_bots?user_id=${UserProfile.getId()}`, {withCredentials: true})
+        axios.get(`${servConfig}get_user_bots?user_id=${UserProfile.getId()}`, {withCredentials: true})
             .then(response => {
                 this.setState({
                     bots: response.data.bots

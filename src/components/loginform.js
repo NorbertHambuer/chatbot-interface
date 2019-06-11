@@ -3,6 +3,7 @@ import UserProfile from "../userProfile";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {Button, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import React, {Component} from "react";
+import servConfig from "../server_config"
 
 export default class LoginForm extends Component {
     constructor(props) {
@@ -31,11 +32,15 @@ export default class LoginForm extends Component {
         bodyFormData.set('username', this.state.username);
         bodyFormData.set('password', this.state.password);
 
-        axios.post(`http://127.0.0.1:5000/login`, bodyFormData, {withCredentials: true})
+        axios.post(`${servConfig}login`, bodyFormData, {withCredentials: true})
             .then(res => {
-                UserProfile.setId(res.data.user_id);
-                localStorage.setItem('csrf_token', res.data.csrf_token);
-                this.props.redirect();
+                if(res.data.user_id) {
+                    UserProfile.setId(res.data.user_id);
+                    localStorage.setItem('csrf_token', res.data.csrf_token);
+                    this.props.redirect();
+                }else{
+                    console.log("login failed!");
+                }
             });
     };
 

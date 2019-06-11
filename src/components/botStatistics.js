@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { Line, Polar, Doughnut } from 'react-chartjs-2';
 import axios from "axios";
 import UserProfile from "../userProfile";
+import servConfig from "../server_config"
 
 export default class BotStatistics extends Component {
     constructor(props) {
@@ -17,7 +18,7 @@ export default class BotStatistics extends Component {
     };
 
     componentDidMount(prevProps) {
-        axios.get(`http://127.0.0.1:5000/most_asked_questions?user_id=${UserProfile.getId()}&bot_id=${this.props.match.params.id}`, {withCredentials: true})
+        axios.get(`${servConfig}most_asked_questions?user_id=${UserProfile.getId()}&bot_id=${this.props.match.params.id}`, {withCredentials: true})
             .then(response => {
                 let labels = response.data.map(question => question[0]);
                 let data = response.data.map(question => question[1]);
@@ -64,7 +65,7 @@ export default class BotStatistics extends Component {
                 })
             });
 
-        axios.get(`http://127.0.0.1:5000/most_asked_topics_bot?user_id=${UserProfile.getId()}&bot_id=${this.props.match.params.id}`, {withCredentials: true})
+        axios.get(`${servConfig}most_asked_topics_bot?user_id=${UserProfile.getId()}&bot_id=${this.props.match.params.id}`, {withCredentials: true})
             .then(response => {
                 let labels = response.data.map(question => question[0]);
                 let data = response.data.map(question => question[1]);
@@ -111,7 +112,7 @@ export default class BotStatistics extends Component {
                 })
             });
 
-        axios.get(`http://127.0.0.1:5000/bot_usage?user_id=${UserProfile.getId()}&bot_id=${this.props.match.params.id}`, {withCredentials: true})
+        axios.get(`${servConfig}bot_usage?user_id=${UserProfile.getId()}&bot_id=${this.props.match.params.id}`, {withCredentials: true})
             .then(response => {
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"

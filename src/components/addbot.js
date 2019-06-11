@@ -5,6 +5,7 @@ import axios from 'axios';
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import history from './history';
+import servConfig from "../server_config"
 
 class KnowledgeItem extends Component{
     constructor(props) {
@@ -136,7 +137,7 @@ export default class Addbot extends Component {
         };
 
         axios.defaults.withCredentials = true;
-        axios.post(`http://127.0.0.1:5000/create_bot`, bodyFormData, config)
+        axios.post(`${servConfig}create_bot`, bodyFormData, config)
             .then(res => {
                 history.push('/main');
             });

@@ -3,6 +3,7 @@ import UserProfile from "../userProfile";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {Button, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import React, {Component} from "react";
+import servConfig from "../server_config"
 
 export default class RegisterForm extends Component {
     constructor(props) {
@@ -40,7 +41,7 @@ export default class RegisterForm extends Component {
         bodyFormData.set('password', this.state.password);
 
         if (this.state.password === this.state.passwordConfirm) {
-            axios.post(`http://127.0.0.1:5000/register`, bodyFormData, {withCredentials: true})
+            axios.post(`${servConfig}register`, bodyFormData, {withCredentials: true})
                 .then(res => {
                     UserProfile.setId(res.data.user_id);
                     this.props.redirect();
