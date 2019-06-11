@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from './chat_2.png'
 import Image from 'react-bootstrap/Image'
 import FadeIn from 'react-fade-in';
+import history from "./history";
 
 class Bot extends Component {
     deleteBot(id){
@@ -13,6 +14,10 @@ class Bot extends Component {
         axios.delete(`http://127.0.0.1:5000/bot?bot_id=${id}&user_id=${UserProfile.getId()}`, {withCredentials: true, headers: {'Content-Type' : 'application/json', "X-CSRF-TOKEN": token}}).then(response =>{
             this.props.delete(this.props.index);
         });
+    }
+
+    showStatistics(id){
+        history.push(`/botStatistics/${id}`);
     }
 
     render() {
@@ -26,7 +31,7 @@ class Bot extends Component {
                     <div className="col-sm-2" onClick={() => this.deleteBot(botDetails.id)}><img className="img-bot" src={require(`../assets/img/delete.png`)} alt=''/></div>
                     <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docs.png`)} alt=''/></div>
                     <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docker.png`)} alt=''/></div>
-                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/statistics.png`)} alt=''/></div>
+                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/statistics.png`)} onClick={(id) => this.showStatistics(botDetails.id)} alt=''/></div>
                     {this.props.active === this.props.id ? <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/shutdown.png`)} alt=''/></div> : <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/start.png`)} alt=''/></div>}
 
 
@@ -90,7 +95,7 @@ class ChatRoom extends Component {
     }
 
     sendQuestion(event) {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && this.state.question !== "") {
             if (this.state.annimationStarted) {
                 this.setState({
                     annimationStarted: false
@@ -111,7 +116,7 @@ class ChatRoom extends Component {
             <FadeIn transitionDuration='800'>
                 <div className='chatroom form-group'>
                     <div id='chatroomHeader'>
-                        <h1 id='headerText'>React simple chatbot</h1>
+                        <h1 id='headerText'>Chatroom</h1>
                     </div>
                     <div id='chatroomBody'>
                         <ul id='message_list' className='chat-message-list'>
@@ -145,20 +150,24 @@ class Chatbot extends Component {
     }
 
     openChatRoom(bot_id) {
-        this.setState({active: !this.state.active});
+        if(bot_id !==0) {
+            this.setState({active: !this.state.active});
 
-        this.addMessage({
-            align: 'left',
-            text: ''
-        });
-
-        if (!this.state.active) {
-            axios.get(`http://127.0.0.1:5000/get_response?user_id=${UserProfile.getId()}&bot_id=${bot_id}&question=Hello`, {withCredentials: true})
-                .then(response => {
-                    this.changeLastMessage(response.data.answer)
+            if (!this.state.active && this.state.messages.length === 0) {
+                this.addMessage({
+                    align: 'left',
+                    text: ''
                 });
-        } else {
-            console.log("closed");
+
+                axios.get(`http://127.0.0.1:5000/get_response?user_id=${UserProfile.getId()}&bot_id=${bot_id}&question=Hello`, {withCredentials: true})
+                    .then(response => {
+                        this.changeLastMessage(response.data.answer)
+                    });
+            } else {
+                    this.setState({
+                        messages: []
+                    });
+            }
         }
     }
 
@@ -189,6 +198,12 @@ class Chatbot extends Component {
         });
     }
 
+/*    componentWillUpdate(prevState){
+            this.setState({
+                prev_bot: prevState.bot_id
+            });
+    }*/
+
     render() {
         return (
             <div id='chatbotComponent'>
@@ -203,8 +218,7 @@ class Chatbot extends Component {
     }
 }
 
-/*List with properties, if 1 BOT - align left, 2 Align right*/
-/*Create new component for whole chatbot ui that takes a bot id as a parameter*/
+/**Create new component for whole chatbot ui that takes a bot id as a parameter**/
 export default class Main extends Component {
     constructor(props) {
         super(props);

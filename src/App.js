@@ -9,6 +9,8 @@ import Addbot from './components/addbot'
 import Statistics from './components/statistics'
 import NavigationBar from './components/navbar'
 import UserProfile from './userProfile'
+import BotStatistics from './components/botStatistics'
+
 
 class App extends Component {
     constructor(props) {
@@ -39,6 +41,7 @@ class App extends Component {
                     <Route path="/main" component={Main}/>
                     <Route path="/addbot" component={Addbot}/>
                     <Route path="/statistics" component={Statistics}/>
+                    <Route path="/botStatistics/:id" component={BotStatistics}/>
                 </Switch>
             </div>
         );
