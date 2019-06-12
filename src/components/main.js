@@ -227,6 +227,8 @@ export default class Main extends Component {
             bots: [],
             active: 0
         };
+
+
     }
 
     addActiveClass(id) {

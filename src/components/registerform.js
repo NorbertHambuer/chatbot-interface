@@ -1,9 +1,9 @@
 import axios from "axios";
-import UserProfile from "../userProfile";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {Button, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import React, {Component} from "react";
 import servConfig from "../server_config"
+import UserProfile from "../userProfile";
 
 export default class RegisterForm extends Component {
     constructor(props) {
@@ -45,10 +45,12 @@ export default class RegisterForm extends Component {
         if (this.state.password === this.state.passwordConfirm) {
             axios.post(`${servConfig}register`, bodyFormData, {withCredentials: true})
                 .then(res => {
-                    this.props.transition('registerVisible', 'loginVisible');
+                    UserProfile.setId(res.data.user_id);
+                    localStorage.setItem('csrf_token', res.data.csrf_token);
+                    this.props.redirect();
                 });
         }
-    }
+    };
 
     render() {
         return (

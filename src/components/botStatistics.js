@@ -18,6 +18,7 @@ export default class BotStatistics extends Component {
     };
 
     componentDidMount(prevProps) {
+        console.log(this.props.match);
         axios.get(`${servConfig}most_asked_questions?user_id=${UserProfile.getId()}&bot_id=${this.props.match.params.id}`, {withCredentials: true})
             .then(response => {
                 let labels = response.data.map(question => question[0]);
@@ -165,7 +166,7 @@ export default class BotStatistics extends Component {
 
         return (
 
-            <div className="statistics col-sm-6 offset-md-3">
+            <div className="botStatistics col-sm-6 offset-md-3">
                 <h1>Most asked questions</h1>
                 <Doughnut ref="chart" data={this.state.mostAskedQuestions} />
                 <h1>Most asked topics</h1>

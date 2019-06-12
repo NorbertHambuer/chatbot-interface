@@ -1,6 +1,8 @@
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import React, {Component} from "react";
-import { Bar, Line, Pie } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
+import axios from "axios";
+import servConfig from "../server_config";
+import UserProfile from "../userProfile";
 
 
 export default class Statistics extends Component {
@@ -8,84 +10,43 @@ export default class Statistics extends Component {
         super(props);
 
         this.state = {
-            email: ""
+            usageStats: {}
         };
     }
 
-    sendPasswordRecovery() {
+    componentDidMount() {
+        axios.get(`${servConfig}user_bots_usage?user_id=${UserProfile.getId()}`, {withCredentials: true})
+            .then(response => {
+                let labels = response.data.map(botDetails => botDetails.bot);
+                let data = response.data.map(botDetails => botDetails.questions);
 
+                let dataset = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Bots usage",
+                            fillColor: "rgba(19,180,255,0.75)",
+                            strokeColor: "rgba(19,180,255,0.75)",
+                            highlightFill: "rgba(19,180,255,0.75)",
+                            highlightStroke: "rgba(19,180,255,0.75)",
+                            backgroundColor: "rgba(19,180,255,0.75)",
+                            data: data
+                        }
+                    ]
+                };
+
+                this.setState({
+                    usageStats: dataset
+                })
+            });
     }
 
-    validateForm() {
-        return this.state.email.length > 0;
-    }
-
-    handleChange = event => {
-        this.setState({
-            [event.target.id]: event.target.value
-        });
-    };
-
-
-/*<ReactCSSTransitionGroup
-                transitionAppear={true}
-                transitionAppearTimeout={1000}
-                transitionEnterTimeout={1000}
-                transitionLeaveTimeout={10}
-                transitionName='loadComponent'
-            >
-                    <div className="statistics">
-                        <Bar
-                            data={[1,2,3,4]}
-                            width={100}
-                            height={50}
-                            options={{ maintainAspectRatio: false }}
-                        />
-                    </div>
-            </ReactCSSTransitionGroup>*/
 
     render() {
-        const data = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'My First dataset',
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: [
-                        '#e34222',
-                        '#E37215',
-                        '#a9a233',
-                        '#32CD32',
-                        '#232AA9',
-                        '#32a5a9',
-                        '#a91b9e',
-                    ],
-                    borderColor: 'rgba(75,192,192,1)',
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(75,192,192,1)',
-                    pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: [1,2,3,4,5,6,7]
-                }
-            ]
-        };
         return (
-
-        <div className="statistics">
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
-            <Pie ref="chart" data={data} />
+        <div className="statistics col-sm-6 offset-md-3">
+            <h1>Bots Usage</h1>
+            <Bar data={this.state.usageStats} /*options={chartOptions}*//>
         </div>
         )
     }
