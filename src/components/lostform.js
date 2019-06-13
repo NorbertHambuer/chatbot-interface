@@ -1,6 +1,8 @@
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {Button, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import React, {Component} from "react";
+import axios from "axios";
+import servConfig from "../server_config";
 
 export default class LostForm extends Component {
     constructor(props) {
@@ -11,8 +13,13 @@ export default class LostForm extends Component {
         };
     }
 
-    sendPasswordRecovery() {
-
+    sendPasswordRecovery = event => {
+        event.preventDefault();
+        axios.get(`${servConfig}send_recovery_mail?email=${this.state.email}`)
+            .then(response => {
+                console.log(response);
+                alert("Email sent!");
+            });
     }
 
     validateForm() {
