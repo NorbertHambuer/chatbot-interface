@@ -41,3 +41,12 @@ form{
     position: absolute;
     padding-top: 1em;
 }
+
+#popover-basic{
+    /*width: 1200px;*/
+}
+
+.delimiter-span{
+    color: red;
+    font-size:1.5em;
+}

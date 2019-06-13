@@ -69,6 +69,15 @@
     bottom: 8em;
 }
 
+@media (max-height: 900px) {
+    .chatroom{
+        bottom: 2em;
+        height: 38em;
+    }
+}
+
+
+
 #chatroomHeader{
     background-color: #47add0;
     display: flex;
@@ -263,3 +272,10 @@ body {
     background-color: #26c2f0;
     border-radius: 25px;
 }
+
+.img-question-mark{
+    position: absolute;
+    left:100%;
+    top:72%;
+}
+

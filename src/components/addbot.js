@@ -1,11 +1,20 @@
 import React, {Component} from "react";
-import {Button, FormGroup, FormControl, FormLabel} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, OverlayTrigger, Popover} from "react-bootstrap";
 import "./addbot.css";
 import axios from 'axios';
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import history from './history';
 import servConfig from "../server_config"
+
+
+const popover = (
+    <Popover id="popover-basic" title="CSV File Structure">
+        Each line should be in this format:<br></br>
+        <strong>Question</strong><span className="delimiter-span">;</span><strong>Answer</strong><span className="delimiter-span">;</span><br></br>
+        *The delimiter can be any character not only ;
+    </Popover>
+);
 
 class KnowledgeItem extends Component{
     constructor(props) {
@@ -184,6 +193,9 @@ export default class Addbot extends Component {
                                   });
                               }}
                     />
+                    <OverlayTrigger trigger="hover" placement="right" overlay={popover}>
+                    <img className="img-question-mark" src={require(`../assets/img/question_mark.png`)} alt=''/>
+                    </OverlayTrigger>
                 </FormGroup>
                 <FormGroup controlId="csv_files">
                     <FormLabel>CSV Files</FormLabel>
