@@ -199,12 +199,6 @@ class Chatbot extends Component {
         });
     }
 
-/*    componentWillUpdate(prevState){
-            this.setState({
-                prev_bot: prevState.bot_id
-            });
-    }*/
-
     render() {
         return (
             <div id='chatbotComponent'>
