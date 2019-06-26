@@ -21,6 +21,10 @@ class Bot extends Component {
         history.push(`/botStatistics/${id}`);
     }
 
+    showQuestions(id){
+        history.push(`/botQuestions/${id}`);
+    }
+
     render() {
         const botDetails = this.props;
         return (
@@ -29,11 +33,11 @@ class Bot extends Component {
                     <span className="botName">{botDetails.name}</span>
                 </div>
                 <div className="col-sm-8 row botButtonsDiv">
-                    <div className="col-sm-2" onClick={() => this.deleteBot(botDetails.id)}><img className="img-bot" src={require(`../assets/img/delete.png`)} alt=''/></div>
-                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docs.png`)} alt=''/></div>
-                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docker.png`)} alt=''/></div>
-                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/statistics.png`)} onClick={(id) => this.showStatistics(botDetails.id)} alt=''/></div>
-                    {this.props.active === this.props.id ? <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/shutdown.png`)} alt=''/></div> : <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/start.png`)} alt=''/></div>}
+                    <div className="col-sm-2" onClick={() => this.deleteBot(botDetails.id)}><img className="img-bot" src={require(`../assets/img/delete.png`)} alt='Delete Bot' title='Delete bot'/></div>
+                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docs.png`)} onClick={(id) => this.showQuestions(botDetails.id)} alt='Questions List' title='Questions List'/></div>
+                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docker.png`)} alt='Export docker file' title='Export docker file'/></div>
+                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/statistics.png`)} onClick={(id) => this.showStatistics(botDetails.id)} alt='Bot Statistics' title='Bot Statistics'/></div>
+                    {this.props.active === this.props.id ? <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/shutdown.png`)} alt='Toggle Bot Off' title='Toggle Bot Off'/></div> : <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/start.png`)} alt='Toggle Bot On' title='Toggle Bot On'/></div>}
 
 
                 </div>

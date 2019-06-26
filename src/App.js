@@ -9,6 +9,7 @@ import Addbot from './components/addbot'
 import Statistics from './components/statistics'
 import NavigationBar from './components/navbar'
 import BotStatistics from './components/botStatistics'
+import QuestionsList from './components/bot_questions'
 import ChangePassword from './components/changePassword'
 
 
@@ -40,6 +41,7 @@ class App extends Component {
                     <Route path="/addbot" component={Addbot}/>
                     <Route path="/statistics" component={Statistics}/>
                     <Route path="/botStatistics/:id" component={BotStatistics}/>
+                    <Route path="/botQuestions/:id" component={QuestionsList}/>
                     <Route path="/reset_pass/:token" component={props => <ChangePassword loginUpdate={this.showNavigation.bind(this)} {...props}/>}/>
                 </Switch>
             </div>
