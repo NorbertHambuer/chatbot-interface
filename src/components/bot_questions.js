@@ -2,13 +2,14 @@ import React, {Component} from "react";
 import axios from "axios";
 import UserProfile from "../userProfile";
 import servConfig from "../server_config"
+import "./bot_questions.css";
 
 class Question extends Component{
     render(){
         return(
             <div>
-                <span>{this.props.question}</span>
-                <span>{this.props.answer}</span>
+                <div className="statement col-md-6"><span>{this.props.question}</span></div>
+                <div className="statement col-md-6"><span>{this.props.answer}</span></div>
             </div>
         )
     }
