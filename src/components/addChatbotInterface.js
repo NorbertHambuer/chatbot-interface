@@ -20,7 +20,7 @@ export default class ChatbotAddInterface extends Component {
     }
 
     openChatRoom(bot_id) {
-        if(bot_id !==0) {
+        if (bot_id !== 0) {
             this.setState({active: !this.state.active});
 
             if (!this.state.active && this.state.messages.length === 0) {
@@ -37,27 +37,34 @@ export default class ChatbotAddInterface extends Component {
     }
 
     getResponse(question) {
-        if(this.state.messages[this.state.messages.length - 2].text === 'Enter your question.'){
+        if (this.state.messages[this.state.messages.length - 2].text === 'Enter your question.') {
             this.changeLastMessage(question);
 
             this.addMessage({
                 align: 'left',
-                text: 'Enter the response'});
-        }else{
+                text: 'Enter the response'
+            });
+        } else {
             this.changeLastMessage(question);
             this.addMessage({
                 align: 'left',
                 text: 'Enter your question.'
             });
 
-            let question_answer = [this.state.messages[this.state.messages.length - 3].text, question];
+            let question_asked = this.state.messages[this.state.messages.length - 3].text;
 
-           /* axios.get(`${servConfig}get_response?user_id=${UserProfile.getId()}&bot_id=${this.props.bot_id}&question=${question}`, {withCredentials: true})
-                .then(response => {
-                    this.addMessage({
-                        align: 'left',
-                        text: response.data.answer});
-                });*/
+            let question_answer = `${this.state.messages[this.state.messages.length - 3].text};${question}`;
+
+            var bodyFormData = new FormData();
+            bodyFormData.set('bot_id', UserProfile.getId());
+            bodyFormData.set('user_id', this.props.bot_id);
+            bodyFormData.set('questions_list', question_answer);
+
+            axios.put(`${servConfig}bot?user_id=${UserProfile.getId()}&bot_id=${this.props.bot_id}`, bodyFormData)
+                .then(res => {
+                        this.props.addQuestion(question_asked, question);
+                    }
+                );
         }
 
 
@@ -84,7 +91,8 @@ export default class ChatbotAddInterface extends Component {
         return (
             <div id='chatbotComponent'>
                 {this.state.active &&
-                <ChatRoom messages={this.state.messages} addMessage={(message) => this.addMessage(message)} getResponse={(question) => this.getResponse(question)}/>}
+                <ChatRoom messages={this.state.messages} addMessage={(message) => this.addMessage(message)}
+                          getResponse={(question) => this.getResponse(question)}/>}
                 <div className='chatbotButton'>
                     <Image src={logo} roundedCircle className='chatbotIcon'
                            onClick={() => this.openChatRoom(this.props.bot_id)}/>

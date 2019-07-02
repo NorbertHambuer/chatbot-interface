@@ -55,7 +55,7 @@
 }
 
 .chatroom{
-    position: relative;
+    position: fixed;
     /*border-width: 2px;*/
     /*border-color: #630dff;*/
     /*border-style: solid;*/
