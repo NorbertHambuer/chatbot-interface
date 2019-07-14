@@ -33,7 +33,6 @@ class Message extends Component {
 
 export default class ChatRoom extends Component {
     constructor(props) {
-        console.log("chatroom");
         super(props);
         this.state = {
             question: '',

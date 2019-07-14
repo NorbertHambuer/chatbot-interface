@@ -25,6 +25,13 @@ class Bot extends Component {
         history.push(`/botQuestions/${id}`);
     }
 
+    exportDocker(id){
+        axios.get(`${servConfig}build_docker_image?user_id=${UserProfile.getId()}&bot_id=${id}`, {withCredentials: true})
+            .then(response => {
+                console.log(response);
+            });
+    }
+
     render() {
         const botDetails = this.props;
         return (
@@ -35,7 +42,7 @@ class Bot extends Component {
                 <div className="col-sm-8 row botButtonsDiv">
                     <div className="col-sm-2" onClick={() => this.deleteBot(botDetails.id)}><img className="img-bot" src={require(`../assets/img/delete.png`)} alt='Delete Bot' title='Delete bot'/></div>
                     <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docs.png`)} onClick={(id) => this.showQuestions(botDetails.id)} alt='Questions List' title='Questions List'/></div>
-                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docker.png`)} alt='Export docker file' title='Export docker file'/></div>
+                    <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/docker.png`)} onClick={(id) => this.exportDocker(botDetails.id)} alt='Export docker file' title='Export docker file'/></div>
                     <div className="col-sm-2"><img className="img-bot" src={require(`../assets/img/statistics.png`)} onClick={(id) => this.showStatistics(botDetails.id)} alt='Bot Statistics' title='Bot Statistics'/></div>
                     {this.props.active === this.props.id ? <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/shutdown.png`)} alt='Toggle Bot Off' title='Toggle Bot Off'/></div> : <div className="col-sm-2" onClick={() => this.props.setActive(this.props.id)}><img className="img-bot" src={require(`../assets/img/start.png`)} alt='Toggle Bot On' title='Toggle Bot On'/></div>}
 
