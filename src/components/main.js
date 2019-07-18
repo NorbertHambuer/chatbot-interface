@@ -26,7 +26,7 @@ class Bot extends Component {
     }
 
     exportDocker(id){
-        axios.get(`${servConfig}build_docker_image?user_id=${UserProfile.getId()}&bot_id=${id}`, {withCredentials: true})
+        axios.get(`${servConfig}build_docker_img?user_id=${UserProfile.getId()}&bot_id=${id}`, {withCredentials: true})
             .then(response => {
                 console.log(response);
             });
